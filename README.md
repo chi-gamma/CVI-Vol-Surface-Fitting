@@ -25,8 +25,22 @@ A robust CVI implementation should satisfy the following:
    The fitting algorithm should converge reliably and be efficient for practical use.
 
 ---
+## 📊 Results
+### Volatility Smile Calibration
+
+The figure below compares market bid and ask implied volatility quotes with the fitted CVI volatility smile. The fitted smile remains smooth while lying within the market bid-ask spread. The lower panel shows the corresponding risk-neutral probability density implied by the fitted arbitrage-free volatility smile.
 
 ![Volatility Smile](https://github.com/user-attachments/assets/e894e894-834f-4a99-a27b-74aefe72c62a)
+
+**Figure 1.** Market bid and ask volatility quotes together with the fitted Convex Volatility Interpolation smile. The corresponding risk-neutral probability density implied by the fitted smile is shown below.
+
+### Implied Volatility Surface
+
+The figure below illustrates the arbitrage-free implied volatility surface produced by the Convex Volatility Interpolation methodology across option tenor and log-forward moneyness.
+
+<img width="623" height="590" alt="CVI implied volatility surface" src="https://github.com/user-attachments/assets/2850bdad-5da2-4aca-a715-3cea10f53097" />
+
+**Figure 2.** Arbitrage-free implied volatility surface generated using the Convex Volatility Interpolation methodology.
 
 ---
 
