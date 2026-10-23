@@ -1,20 +1,24 @@
 # Convex Volatility Interpolation
 
-This project implements **Convex Volatility Interpolation (CVI)** — a model-free method for fitting a volatility surface introduced in [1]. The CVI method demonstrates how to fit a volatility surface while **preventing arbitrage**.  
+This project implements **Convex Volatility Interpolation (CVI)**, a model-free, arbitrage-constrained volatility surface fitting methodology introduced by Deschâtres [1].
 
-CVI uses a **dual parameterization** in cubic spline and B-spline spaces, calibrated via **quadratic programming (QP) with linear constraints**. It places no restrictions on the number of parameters, allowing it to flexibly fit any volatility surface observed in the market.
+CVI parameterizes **implied variance** using equivalent cubic spline and B-spline representations, fitting the surface through **quadratic programming (QP) with linear constraints**. Its cubic-spline parameters describe ATM variance, ATM skew, and variance convexity at selected knots, providing an intuitive representation of smile shape.
+
+Unlike approaches that calibrate individual maturity slices independently, CVI **fits all expiries simultaneously**, incorporating strike- and maturity-related constraints within a unified optimization framework. Its flexible spline representation can capture complex volatility smiles, including **W-shaped structures** that are difficult to represent using fixed-parameter models such as standard SVI.
+
+A central challenge is the treatment of **butterfly arbitrage**. Although butterfly-arbitrage constraints are linear in option price space, they are nonlinear and nonconvex in implied variance space. CVI addresses this through **iterative linearization**, solving an initial QP followed by one or more QPs with butterfly-arbitrage constraints linearized around the preceding solution.
 
 ---
 
 ## Key Requirements for a Good Volatility Surface Fitter
 
-A robust CVI implementation should satisfy the following:
+A robust volatility surface fitter should satisfy the following:
 
 1. **Market Consistency:**  
    Accurately fit market bid and ask quotes while avoiding overfitting.
 
 2. **Arbitrage-Free:**  
-   Ensure the surface is arbitrage-free in strike and time, even if market quotes are not. This includes:
+   Enforce constraints designed to prevent static arbitrage, even if market quotes are not. This includes:
    - No **calendar spread arbitrage**
    - No **butterfly arbitrage**, including outside listed strikes and in the tails
 
@@ -28,7 +32,7 @@ A robust CVI implementation should satisfy the following:
 ## 📊 Results
 ### Volatility Smile Calibration
 
-The figure below compares market bid and ask implied volatility quotes with the fitted CVI volatility smile. The fitted smile remains smooth while lying within the market bid-ask spread. The lower panel shows the corresponding risk-neutral probability density implied by the fitted arbitrage-free volatility smile.
+The figure below compares market bid and ask implied volatility quotes with the fitted CVI volatility smile. The fitted smile remains smooth while lying within the market bid-ask spread. The lower panel shows the corresponding risk-neutral probability density implied by the fitted volatility smile.
 
 ![Volatility Smile](https://github.com/user-attachments/assets/e894e894-834f-4a99-a27b-74aefe72c62a)
 
@@ -46,5 +50,5 @@ The figure below illustrates the arbitrage-free implied volatility surface produ
 
 ## References
 
-[1] Deschâtres, F. (2024). *Convex Volatility Interpolation.*  
+[1] Deschâtres, F. (2026). Convex Volatility Interpolation. Risk, Cutting Edge, February 27, 2026. Available at SSRN.
 Available at SSRN: [https://ssrn.com/abstract=4831218](https://ssrn.com/abstract=4831218) or [http://dx.doi.org/10.2139/ssrn.4831218](http://dx.doi.org/10.2139/ssrn.4831218)
